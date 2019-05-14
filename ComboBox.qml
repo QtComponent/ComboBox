@@ -13,7 +13,6 @@ Item {
 
     property Component delegate: Rectangle {
         width: 200; height: 50
-        color: "lightblue"
         Text {
             anchors.centerIn: parent
             text: modelData
@@ -25,10 +24,11 @@ Item {
 
     property Component contentItem : Rectangle {
         width: 200; height: 50
-        color: pressed ?  "gray" : "lightgreen"
+        color: _private.isPopupList ?  "#bdbdbd" : "#e0e0e0"
     }
 
     property Component background : Rectangle {
+        width: contentItemId.width; height: contentItemId.height*3
     }
 
     Loader {
@@ -58,12 +58,12 @@ Item {
             width: contentItemId.width
             height: 0
             Behavior on height {
-                NumberAnimation { duration: 1000 }
+                NumberAnimation { duration: 200 }
             }
 
             ListView {
                 id: _listView
-                width: contentItemId.width; height: count * contentItemId.item.height
+                width: backgroundId.width; height: backgroundId.height
     //            visible: _private.isPopupList
                 delegate: root.delegate
 
@@ -78,7 +78,7 @@ Item {
         property bool isPopupList: false
         onIsPopupListChanged:
             if (isPopupList)
-                rect.height = 300
+                rect.height = backgroundId.height
             else
                 rect.height = 0
     }

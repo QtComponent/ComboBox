@@ -4,6 +4,8 @@ import "../"
 Rectangle {
     width: 640; height: 480
     ComboBox {
+        y: 10
+        anchors.horizontalCenter: parent.horizontalCenter
         model: ["One", "Two", "Three", "Four", "Five"]
     }
 
