@@ -41,7 +41,8 @@ Item {
 
     property Component contentItem : Rectangle {
         width: 200; height: 50
-        color: _private.isPopupList ?  "#bdbdbd" : "#e0e0e0"
+//        color: ?"#bdbdbd" : "#e0e0e0"
+        color: "#bdbdbd"
     }
 
     property Component background : Rectangle {
@@ -70,31 +71,41 @@ Item {
             }
         }
 
-        Rectangle {
-            id: listViewBackground
-            width: contentItemId.width
-            height: 0
-            clip: true
+        ListView {
+            id: _listView
+            width: contentItemId.width; height: contentItemId.height * 3
+            visible: false
+            delegate: root.delegate
 
-            Behavior on height {
-                NumberAnimation { duration: 200 }
+            onVisibleChanged: {
+                _listView.y = -100
             }
 
-            ListView {
-                id: _listView
-                width: parent.width; height: parent.height
-                visible: false;
-                delegate: root.delegate
-                onVisibleChanged: {
-                    if (visible)
-                        listViewBackground.height = contentItemId.height * 3
-                    else
-                        listViewBackground.height = 0
-                }
-
-
+            NumberAnimation {
+                target: _listView
+                property: "y"
+                duration: 200
+                easing.type: Easing.InOutQuad
             }
+//            onVisibleChanged: {
+//                if (visible)
+//                    listViewBackground.height = contentItemId.height * 3
+//                else
+//                    listViewBackground.height = 0
+//            }
         }
+
+//        Rectangle {
+//            id: listViewBackground
+//            width: contentItemId.width
+//            height: 0
+//            clip: true
+//
+//            Behavior on height {
+//                NumberAnimation { duration: 200 }
+//            }
+//
+//        }
     }
 
     /* Private */
