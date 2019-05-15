@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 
 Item {
     id: root
@@ -12,14 +12,31 @@ Item {
     property alias pressed: mouseArea.pressed
 
     property Component delegate: Rectangle {
+        id: d
         width: 200; height: 50
+        color: delegateMouseArea.isEnter ? "red" : "blue"
+
         Text {
             anchors.centerIn: parent
             text: modelData
         }
+
+        MouseArea {
+            id: delegateMouseArea
+            property bool isEnter: false
+            anchors.fill: parent
+            hoverEnabled: true
+            onEntered: isEnter = true
+            onExited: isEnter = false
+            onClicked: {
+                d.ListView.view.visible = false
+                console.log(">>>>>>")
+            }
+        }
     }
 
-    property Component indicator : Rectangle {
+    property Component indicator : Item {
+
     }
 
     property Component contentItem : Rectangle {
@@ -49,37 +66,39 @@ Item {
             MouseArea {
                 id: mouseArea
                 anchors.fill: parent
-                onPressed: _private.isPopupList = !_private.isPopupList
+                onClicked: _listView.visible = !_listView.visible
             }
         }
 
         Rectangle {
-            id: rect
+            id: listViewBackground
             width: contentItemId.width
             height: 0
+            clip: true
+
             Behavior on height {
                 NumberAnimation { duration: 200 }
             }
 
             ListView {
                 id: _listView
-                width: backgroundId.width; height: backgroundId.height
-    //            visible: _private.isPopupList
+                width: parent.width; height: parent.height
+                visible: false;
                 delegate: root.delegate
+                onVisibleChanged: {
+                    if (visible)
+                        listViewBackground.height = contentItemId.height * 3
+                    else
+                        listViewBackground.height = 0
+                }
+
 
             }
-            clip: true
         }
     }
 
     /* Private */
     QtObject {
         id: _private
-        property bool isPopupList: false
-        onIsPopupListChanged:
-            if (isPopupList)
-                rect.height = backgroundId.height
-            else
-                rect.height = 0
     }
 }
