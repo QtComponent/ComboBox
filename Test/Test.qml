@@ -1,115 +1,96 @@
 ﻿import QtQuick 2.12
 import QtQuick.Controls 2.12
-import "../"
+import "../" as My
+import "./"
 
 Rectangle {
     width: 640; height: 480
-    ComboBox {
+    color: "gray"
+
+    My.ComboBox {
+        id: control2
         y: 10
         anchors.horizontalCenter: parent.horizontalCenter
         model: ["One", "Two", "Three", "Four", "Five"]
+
+        contentItem: RoundRectangle {
+            width: 200; height: 50
+            color: control2.down ? "#4cbeff" : "white"
+            radius: 8
+            radiusCorners: control2.down ? (Qt.AlignLeft | Qt.AlignRight | Qt.AlignTop) :
+                                           (Qt.AlignLeading | Qt.AlignRight | Qt.AlignTop | Qt.AlignBottom)
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                color: control2.down ? "white" : "#333333"
+                text: control2.currentText
+                font.bold: true
+                font.pixelSize: 17
+            }
+        }
+
+        indicator: Item {
+            width: control2.width; height: control2.height
+
+            Item {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: 20
+                width: Math.sqrt(_triangle.width*_triangle.width*2); height: width/2
+                clip: true
+
+                Rectangle {
+                    id: _triangle
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: parent.height/4
+                    width: 12; height: width
+                    color: control2.down ? "white" : "#4cbeff"
+                    rotation: 45
+                }
+            }
+        }
+
+        delegate: Rectangle {
+            width: 200; height: 50
+
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                color: delegateMouseArea.isEnter ? "#4cbeff" : "black"
+                text: modelData
+                font.bold: true
+                font.pixelSize: 17
+            }
+
+            Rectangle {
+                id: line
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                width: parent.width*0.8
+                height: 1
+                color: "#e6e8ea"
+                visible: index !== control2.count - 1
+            }
+
+            MouseArea {
+                id: delegateMouseArea
+                property bool isEnter: false
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: isEnter = true
+                onExited: isEnter = false
+                onClicked: {
+                    control2.down = false
+                    control2.currentIndex = index
+                }
+            }
+        }
+
+        popup: Rectangle {
+            width: control2.width; height: control2.height * 3
+        }
     }
-
-//    ComboBox {
-//        id: control
-//        model: ["First", "Second", "Third"]
-//
-//        delegate: ItemDelegate {
-//            width: control.width
-//            contentItem: Text {
-//                text: modelData
-//                color: "#21be2b"
-//                font: control.font
-//                elide: Text.ElideRight
-//                verticalAlignment: Text.AlignVCenter
-//            }
-//            highlighted: control.highlightedIndex === index
-//        }
-//
-//        indicator: Canvas {
-//            id: canvas
-//            x: control.width - width - control.rightPadding
-//            y: control.topPadding + (control.availableHeight - height) / 2
-//            width: 12
-//            height: 8
-//            contextType: "2d"
-//
-//            Connections {
-//                target: control
-//                onPressedChanged: canvas.requestPaint()
-//            }
-//
-//            onPaint: {
-//                context.reset();
-//                context.moveTo(0, 0);
-//                context.lineTo(width, 0);
-//                context.lineTo(width / 2, height);
-//                context.closePath();
-//                context.fillStyle = control.pressed ? "#17a81a" : "#21be2b";
-//                context.fill();
-//            }
-//        }
-//
-//        contentItem: Text {
-//            leftPadding: 0
-//            rightPadding: control.indicator.width + control.spacing
-//
-//            text: control.displayText
-//            font: control.font
-//            color: control.pressed ? "#17a81a" : "#21be2b"
-//            verticalAlignment: Text.AlignVCenter
-//            elide: Text.ElideRight
-//        }
-//
-//        background: Rectangle {
-//            implicitWidth: 120
-//            implicitHeight: 40
-//            border.color: control.pressed ? "#17a81a" : "#21be2b"
-//            border.width: control.visualFocus ? 2 : 1
-//            radius: 2
-//        }
-//
-//        popup: Popup {
-//            y: control.height - 1
-//            width: control.width
-//            implicitHeight: contentItem.implicitHeight
-//            padding: 1
-//
-//            contentItem: ListView {
-//                clip: true
-//                implicitHeight: contentHeight
-//                model: control.popup.visible ? control.delegateModel : null
-//                currentIndex: control.highlightedIndex
-//
-//                ScrollIndicator.vertical: ScrollIndicator { }
-//            }
-//
-//            background: Rectangle {
-//                border.color: "#21be2b"
-//                radius: 2
-//            }
-//        }
-//    }
-//
-//    MouseArea {
-//        anchors.fill: parent
-//        onClicked: animation.start()
-//    }
-
-//    Rectangle {
-//        id: rect
-//        width: 200; height: 0
-//        color: "lightblue"
-////        anchors.bottom: parent.bottom
-//    }
-
-//    NumberAnimation {
-//        id: animation
-//        target: rect
-//        properties: "height";
-//        easing.type: Easing.Linear;
-//        from: 0
-//        to: 200
-//        duration: 1000
-//    }
 }
