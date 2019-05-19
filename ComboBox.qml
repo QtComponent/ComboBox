@@ -19,10 +19,6 @@ Item {
     implicitWidth: contentItemId.item.width
     implicitHeight: contentItemId.item.height
 
-    Loader {
-        id: indicatorId
-        sourceComponent: indicator
-    }
 
     Loader {
         id: backgroundId
@@ -45,23 +41,24 @@ Item {
         }
     }
 
-    Item {
+    Loader {
+        id: indicatorId
+        sourceComponent: indicator
+    }
+
+    Loader {
+        id: popupId
         y: contentItemId.item.height
-        width: popupId.item.width
-        height: popupId.item.height
         visible: root.down
         clip: true
-
-        Loader {
-            id: popupId
-            sourceComponent: popup
-        }
+        sourceComponent: popup
 
         ListView {
             id: _listView
             property string currentText: ""
-
-            anchors.fill: parent
+            parent: popupId.item
+            width: popupId.item.width
+            height: popupId.item.height
             delegate: root.delegate
             onCurrentIndexChanged: currentText = model[currentIndex]
         }
