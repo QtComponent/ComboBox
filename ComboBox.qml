@@ -68,13 +68,26 @@ Item {
     QtObject {
         id: _private
         property Component defaultDelegate: Rectangle {
-            id: d
             width: 200; height: 50
-            color: delegateMouseArea.isEnter || root.currentIndex === index ? "red" : "blue"
 
             Text {
-                anchors.centerIn: parent
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                color: delegateMouseArea.isEnter ? "#4cbeff" : "black"
                 text: modelData
+                font.bold: true
+                font.pixelSize: 17
+            }
+
+            Rectangle {
+                id: line
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                width: parent.width*0.8
+                height: 1
+                color: "#e6e8ea"
+                visible: index !== root.count - 1
             }
 
             MouseArea {
@@ -91,14 +104,40 @@ Item {
             }
         }
 
-        property Component defaultIndicator: Item { }
+        property Component defaultIndicator: Item {
+            width: root.width; height: root.height
+
+            Item {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 2
+                anchors.right: parent.right
+                anchors.rightMargin: 15
+                clip: true
+                width: 2*height; height: 9
+
+                Rectangle {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenterOffset: -parent.height/2
+                    width: Math.sqrt(parent.width*parent.width*2)/2; height: width
+                    color: root.down ? "white" : "#4cbeff"
+                    rotation: 45
+                }
+            }
+        }
 
         property Component defaultContentItem: Rectangle {
-            id: app
             width: 200; height: 50
-            color: root.pressed ? "#bdbdbd" : "#e0e0e0"
+            color: root.down ? "#4cbeff" : "white"
+
             Text {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                color: root.down ? "white" : "#333333"
                 text: root.currentText
+                font.bold: true
+                font.pixelSize: 17
             }
         }
 
