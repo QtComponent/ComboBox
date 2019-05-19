@@ -5,9 +5,8 @@ import "./"
 
 Rectangle {
     width: 640; height: 480
-    color: "gray"
 
-    Column {
+    Row {
         anchors.centerIn: parent
         spacing: 100
 
@@ -20,12 +19,17 @@ Rectangle {
             id: control
             model: ["One", "Two", "Three", "Four", "Five"]
 
+            background: Item { }
+
             contentItem: RoundRectangle {
                 width: 200; height: 50
                 color: control.down ? "#4cbeff" : "white"
                 radius: 8
                 radiusCorners: control.down ? (Qt.AlignLeft | Qt.AlignRight | Qt.AlignTop) :
                                                (Qt.AlignLeading | Qt.AlignRight | Qt.AlignTop | Qt.AlignBottom)
+
+                border.color: control.down ? "#00000000" : "#d5d5d5"
+
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
@@ -98,11 +102,9 @@ Rectangle {
 
             popup: Rectangle {
                 width: control.width; height: control.height * 3
+                color: "#00000000"
+                border.color: "#d5d5d5"
             }
-        }
-
-        ComboBox {
-            model: ["One", "Two", "Three", "Four", "Five"]
         }
     }
 }
