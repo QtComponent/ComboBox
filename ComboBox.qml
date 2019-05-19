@@ -4,17 +4,17 @@ Item {
     id: root
 
     property alias  currentIndex: _listView.currentIndex // type: int
-    property string currentText: _listView.currentText // note: read-only
-    property alias  model: _listView.model // type: listmodel
-    property alias  pressed: mouseArea.pressed // type: bool
-    property bool   down: false;
-    property alias  count: _listView.count // type: int; note: read-only
+    property string currentText:  _listView.currentText // note: read-only
+    property alias  model:        _listView.model // type: listmodel
+    property alias  pressed:      mouseArea.pressed // type: bool
+    property bool   down:         false;
+    property alias  count:        _listView.count // type: int; note: read-only
 
-    property Component delegate: _private.defaultDelegate
-    property Component indicator: _private.defaultIndicator
+    property Component delegate:    _private.defaultDelegate
+    property Component indicator:   _private.defaultIndicator
     property Component contentItem: _private.defaultContentItem
-    property Component background: _private.defaultBackground
-    property Component popup: _private.defaultPopup
+    property Component background:  _private.defaultBackground
+    property Component popup:       _private.defaultPopup
 
     implicitWidth: contentItemId.item.width
     implicitHeight: contentItemId.item.height
@@ -45,18 +45,23 @@ Item {
         }
     }
 
-    Loader {
-        id: popupId
+    Item {
         y: contentItemId.item.height
-        sourceComponent: popup
+        width: popupId.item.width
+        height: popupId.item.height
+        visible: root.down
         clip: true
+
+        Loader {
+            id: popupId
+            sourceComponent: popup
+        }
 
         ListView {
             id: _listView
             property string currentText: ""
 
             anchors.fill: parent
-            visible: root.down
             delegate: root.delegate
             onCurrentIndexChanged: currentText = model[currentIndex]
         }
@@ -84,7 +89,7 @@ Item {
                 onExited: isEnter = false
                 onClicked: {
                     root.down = false
-                    d.ListView.view.currentIndex = index
+                    root.currentIndex = index
                 }
             }
         }
@@ -102,7 +107,7 @@ Item {
 
         property Component defaultBackground: Item { }
 
-        property Component defaultPopup: Item {
+        property Component defaultPopup: Rectangle {
             width: root.width; height: root.height * 3
         }
     }
