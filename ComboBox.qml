@@ -19,7 +19,6 @@ Item {
     implicitWidth: contentItemId.item.width
     implicitHeight: contentItemId.item.height
 
-
     Loader {
         id: backgroundId
         sourceComponent: background
@@ -56,9 +55,9 @@ Item {
         ListView {
             id: _listView
             property string currentText: ""
-            parent: popupId.item
-            width: popupId.item.width
+            width:  popupId.item.width
             height: popupId.item.height
+            clip: true
             delegate: root.delegate
             onCurrentIndexChanged: currentText = model[currentIndex]
         }
@@ -141,10 +140,17 @@ Item {
             }
         }
 
-        property Component defaultBackground: Item { }
+        property Component defaultBackground: Rectangle {
+            x: -1; y: -1
+            width: contentItemId.item.width + 2
+            height: contentItemId.item.height + 2
+            border.color: "#d5d5d5"
+        }
 
         property Component defaultPopup: Rectangle {
             width: root.width; height: root.height * 3
+            color: "#00000000"
+            border.color: "#d5d5d5"
         }
     }
 }
