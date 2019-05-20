@@ -128,6 +128,9 @@ Item {
         property Component defaultContentItem: Rectangle {
             width: 200; height: 50
             color: root.down ? "#4cbeff" : "white"
+            border.width: root.down ? 0 : 1
+            border.color: "#d5d5d5"
+
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
@@ -140,12 +143,7 @@ Item {
             }
         }
 
-        property Component defaultBackground: Rectangle {
-            x: -1; y: -1
-            width: contentItemId.item.width + 2
-            height: contentItemId.item.height + 2
-            border.color: "#d5d5d5"
-        }
+        property Component defaultBackground: Item { }
 
         property Component defaultPopup: Rectangle {
             width: root.width; height: root.height * 3
