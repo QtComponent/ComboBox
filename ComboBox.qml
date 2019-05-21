@@ -56,11 +56,13 @@ Item {
     width: contentItemId.item.width
     height: contentItemId.item.height
 
+    /// background
     Loader {
         id: backgroundId
         sourceComponent: background
     }
 
+    /// contentItem
     Item {
         width: contentItemId.item.width
         height: contentItemId.item.height
@@ -77,11 +79,14 @@ Item {
         }
     }
 
+    /// indicator
     Loader {
         id: indicatorId
         sourceComponent: indicator
     }
 
+    /// popup
+    /// 下拉列表ListView
     Loader {
         id: popupId
         y: contentItemId.item.height
@@ -110,6 +115,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 20
+                /* 鼠标进入会显示对应高亮文字。 */
                 color: delegateMouseArea.isEnter ? "#4cbeff" : "black"
                 text: modelData
                 font.bold: true
@@ -123,6 +129,7 @@ Item {
                 width: parent.width*0.8
                 height: 1
                 color: "#e6e8ea"
+                /* 最后一个项不隐藏分隔线。 */
                 visible: index !== root.count - 1
             }
 
@@ -130,10 +137,12 @@ Item {
                 id: delegateMouseArea
                 property bool isEnter: false
                 anchors.fill: parent
-                hoverEnabled: true
+                hoverEnabled: true /* 开启鼠标实时捕抓。 */
                 onEntered: isEnter = true
                 onExited: isEnter = false
                 onClicked: {
+                    /* 当选项被选中后需要用户设置down的状态为false,以让下拉列表收起来。 */
+                    /* 还需设置currentIndex的值，以至于可以刷新contentItem的文字显示。 */
                     root.down = false
                     root.currentIndex = index
                 }
@@ -143,6 +152,7 @@ Item {
         property Component defaultIndicator: Item {
             width: root.width; height: root.height
 
+            /* 三角形指示器 */
             Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.verticalCenterOffset: 2
@@ -168,7 +178,7 @@ Item {
             border.width: root.down ? 0 : 1
             border.color: "#d5d5d5"
 
-
+            /* 显示当前下拉列表选中的内容 */
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -182,6 +192,7 @@ Item {
 
         property Component defaultBackground: Item { }
 
+        /* 设置popup可以设置下拉框的高度和宽度 */
         property Component defaultPopup: Rectangle {
             width: root.width; height: root.height * 3
             color: "#00000000"
