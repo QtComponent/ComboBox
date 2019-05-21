@@ -11,17 +11,46 @@ import QtQuick 2.0
 Item {
     id: root
 
-    property alias  currentIndex: _listView.currentIndex // type: int
-    property string currentText:  _listView.currentText // note: read-only
-    property alias  model:        _listView.model // type: listmodel
-    property alias  pressed:      mouseArea.pressed // type: bool
-    property bool   down:         false;
-    property alias  count:        _listView.count // type: int; note: read-only
+    /// 此属性拥有组合框中当前项的索引。默认值为-1，当count为0时-1，其他情况为0或其他。
+    property alias  currentIndex: _listView.currentIndex
 
+    /**
+     * @brief: 此属性拥有组合框中当前项的文本。
+     * @note: read-only
+     */
+    property string currentText:  _listView.currentText
+
+    /// 此属性为组合框提供数据模型。
+    property alias  model:        _listView.model
+
+    /// 此属性可以判断组合框是否被按下。按钮可以通过触摸或按键事件按下。
+    property alias  pressed:      mouseArea.pressed
+
+    /// 此属性可以判断组合框是否处于展开状态。
+    property bool   down:         false;
+
+    /**
+     * @brief: 组合框中项数。
+     * @note: read-only
+     */
+    property alias  count:        _listView.count
+
+    /**
+     * @brief 该属性为组合框代理项。
+     * @note: 自定义delegate需要手动设置down属性与currentIndex属性以隐藏下拉列表和设置下拉列表当前项。
+     */
     property Component delegate:    _private.defaultDelegate
+
+    /// 用于设置指示器，标识组合框是否处于展开状态。常用的设置为三角形指示器。
     property Component indicator:   _private.defaultIndicator
+
+    /// 用于设置组合框的可视项。
     property Component contentItem: _private.defaultContentItem
+
+    /// 用于设置组合框的可视项的背景。
     property Component background:  _private.defaultBackground
+
+    /// 用于设置下拉框的背景项，设置其宽高可以限制下拉框的大小。默认展示下拉框的三个项目。
     property Component popup:       _private.defaultPopup
 
     width: contentItemId.item.width
