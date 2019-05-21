@@ -16,8 +16,8 @@ Item {
     property Component background:  _private.defaultBackground
     property Component popup:       _private.defaultPopup
 
-    implicitWidth: contentItemId.item.width
-    implicitHeight: contentItemId.item.height
+    width: contentItemId.item.width
+    height: contentItemId.item.height
 
     Loader {
         id: backgroundId
@@ -67,7 +67,7 @@ Item {
     QtObject {
         id: _private
         property Component defaultDelegate: Rectangle {
-            width: 200; height: 50
+            width: 150; height: 40
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
@@ -112,7 +112,7 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: 15
                 clip: true
-                width: 2*height; height: 9
+                width: 2*height; height: 7
 
                 Rectangle {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -126,7 +126,7 @@ Item {
         }
 
         property Component defaultContentItem: Rectangle {
-            width: 200; height: 50
+            width: 150; height: 40
             color: root.down ? "#4cbeff" : "white"
             border.width: root.down ? 0 : 1
             border.color: "#d5d5d5"
