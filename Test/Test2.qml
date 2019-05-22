@@ -62,7 +62,7 @@ Rectangle {
                 }
             }
 
-            delegate: Rectangle {
+            delegate: Item {
                 width: root.width; height: root.height
 
                 Text {
@@ -102,7 +102,7 @@ Rectangle {
             popup: Rectangle {
                 width: root.width; height: root.count < 3 ? root.count * root.height : root.height * 3
                 border.color: "#d5d5d5"
-                border.width: 2
+                border.width: 1
             }
         }
     }
