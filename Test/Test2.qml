@@ -15,33 +15,33 @@ Rectangle {
         }
 
         My.ComboBox {
-            id: control
+            id: root
             model: ["One", "Two", "Three", "Four", "Five"]
 
             background: Item { }
 
             contentItem: RoundRectangle {
-                width: 200; height: 50
-                color: control.down ? "#4cbeff" : "white"
+                width: root.width; height: root.height
+                color: root.down ? "#4cbeff" : "white"
                 radius: 8
-                radiusCorners: control.down ? (Qt.AlignLeft | Qt.AlignRight | Qt.AlignTop) :
+                radiusCorners: root.down ? (Qt.AlignLeft | Qt.AlignRight | Qt.AlignTop) :
                                                (Qt.AlignLeading | Qt.AlignRight | Qt.AlignTop | Qt.AlignBottom)
 
-                border.color: control.down ? "#00000000" : "#d5d5d5"
+                border.color: root.down ? "#00000000" : "#d5d5d5"
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.leftMargin: 20
-                    color: control.down ? "white" : "#333333"
-                    text: control.currentText
+                    color: root.down ? "white" : "#333333"
+                    text: root.currentText
                     font.bold: true
                     font.pixelSize: 17
                 }
             }
 
             indicator: Item {
-                width: control.width; height: control.height
+                width: root.width; height: root.height
 
                 Item {
                     anchors.verticalCenter: parent.verticalCenter
@@ -56,14 +56,14 @@ Rectangle {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: parent.height/4
                         width: 12; height: width
-                        color: control.down ? "white" : "#4cbeff"
+                        color: root.down ? "white" : "#4cbeff"
                         rotation: 45
                     }
                 }
             }
 
             delegate: Rectangle {
-                width: 200; height: 50
+                width: root.width; height: root.height
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
@@ -79,10 +79,10 @@ Rectangle {
                     id: line
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottom
-                    width: parent.width*0.8
+                    width: parent.width - 40
                     height: 1
                     color: "#e6e8ea"
-                    visible: index !== control.count - 1
+                    visible: index !== root.count - 1
                 }
 
                 MouseArea {
@@ -93,16 +93,16 @@ Rectangle {
                     onEntered: isEnter = true
                     onExited: isEnter = false
                     onClicked: {
-                        control.down = false
-                        control.currentIndex = index
+                        root.down = false
+                        root.currentIndex = index
                     }
                 }
             }
 
             popup: Rectangle {
-                width: control.width; height: control.height * 3
-                color: "#00000000"
+                width: root.width; height: root.count < 3 ? root.count * root.height : root.height * 3
                 border.color: "#d5d5d5"
+                border.width: 2
             }
         }
     }
