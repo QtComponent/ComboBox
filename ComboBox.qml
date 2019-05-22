@@ -53,8 +53,8 @@ Item {
     /// 用于设置下拉框的背景项，设置其宽高可以限制下拉框的大小。默认展示下拉框的三个项目。
     property Component popup:       _private.defaultPopup
 
-    width: contentItemId.item.width
-    height: contentItemId.item.height
+    width: 150;
+    height: 40
 
     /// background
     Loader {
@@ -96,6 +96,7 @@ Item {
 
         ListView {
             id: _listView
+            z: popupId.item.z + 1
             property string currentText: ""
             width:  popupId.item.width
             height: popupId.item.height
@@ -109,7 +110,7 @@ Item {
     QtObject {
         id: _private
         property Component defaultDelegate: Rectangle {
-            width: 150; height: 40
+            width: root.width; height: root.height
 
             Text {
                 anchors.verticalCenter: parent.verticalCenter
@@ -126,7 +127,7 @@ Item {
                 id: line
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
-                width: parent.width*0.8
+                width: parent.width - 40
                 height: 1
                 color: "#e6e8ea"
                 /* 最后一个项不隐藏分隔线。 */
@@ -173,7 +174,7 @@ Item {
         }
 
         property Component defaultContentItem: Rectangle {
-            width: 150; height: 40
+            width: root.width; height: root.height
             color: root.down ? "#4cbeff" : "white"
             border.width: root.down ? 0 : 1
             border.color: "#d5d5d5"
@@ -194,9 +195,9 @@ Item {
 
         /* 设置popup可以设置下拉框的高度和宽度 */
         property Component defaultPopup: Rectangle {
-            width: root.width; height: root.height * 3
-            color: "#00000000"
+            width: root.width; height: root.count < 3 ? root.count * root.height : root.height * 3
             border.color: "#d5d5d5"
+            border.width: 2
         }
     }
 }
